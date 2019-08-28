@@ -3,11 +3,9 @@ package com.swingy.view;
 import com.swingy.model.Hero;
 import com.swingy.helpers.Tools;
 import com.swingy.controller.GameMap;
-
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-
 import javax.validation.ValidatorFactory;
 import javax.validation.Validator;
 import javax.validation.Validation;
@@ -24,7 +22,7 @@ public class ConsoleViewInterface implements ViewModeInterface {
         System.out.printf("%s MODE\n", this.name);
     }
 
-    public void init(Scanner sc){
+    public void Starting(Scanner sc){
         int input = -1;
 
         try {
@@ -46,7 +44,7 @@ public class ConsoleViewInterface implements ViewModeInterface {
             if (input == 1)
                 this.createHero(sc);
             else if (input == 2)
-                this.selectHero(sc);
+                this.SelectingOldHero(sc);
         }
     }
 
@@ -71,33 +69,33 @@ public class ConsoleViewInterface implements ViewModeInterface {
         int defence;
         int hitPoints;
 
-        System.out.println("\nGAME\nLets create a hero");
-        System.out.println("\nYOU");
+        System.out.println("\nGAME\nNow, lets create a new hero");
+//        System.out.println("\nYOU");
 
         try {
-            System.out.print("Enter Name (String): ");
+            System.out.print("Enter name of your hero: ");
             name = sc.nextLine();
             
-            System.out.print("Enter Class (String): ");
+            System.out.print("Enter class your hero should belong to: ");
             heroClass = sc.nextLine();
             
             System.out.print("Enter Level (Integer between 1 - 5): ");
             level = sc.nextInt();
             sc.nextLine(); // Moving Cursor
             
-            System.out.print("Enter Experience (Integer): ");
+            System.out.print("Enter your experience level (Number): ");
             experience = sc.nextLong();
             sc.nextLine(); // Moving Cursor
             
-            System.out.print("Enter Attack (Integer): ");
+            System.out.print("Enter attack points (Number): ");
             attack = sc.nextInt();
             sc.nextLine(); // Moving Cursor
             
-            System.out.print("Enter Defence (Integer): ");
+            System.out.print("Enter defence points(Number): ");
             defence = sc.nextInt();
             sc.nextLine(); // Moving Cursor
             
-            System.out.print("Enter Hit Points (Integer): ");
+            System.out.print("Enter hit points (Number): ");
             hitPoints = sc.nextInt();
 
             this.hero = new Hero(name, heroClass, level, experience, attack, defence, hitPoints);
@@ -118,17 +116,17 @@ public class ConsoleViewInterface implements ViewModeInterface {
                 sc.close();
             System.exit(1);
         } finally {
-            System.out.println("\nGAME:\nHero created.");
+            System.out.println("\nGAME:\nNew hero created.");
             System.out.println(this.hero.heroStats());
         }
     }
 
-    public void selectHero(Scanner sc){
+    public void SelectingOldHero(Scanner sc){
         String heroes = null;
         int heroNumber = -1;
         String heroChosen = null;
         
-        System.out.println("\nGAME\nLets select a hero");
+        System.out.println("\nGAME\nLets select an already existing hero");
         heroes = Tools.AllSavedHeroes(Hero.FILENAME);
         System.out.println(heroes);
         try {
@@ -143,7 +141,7 @@ public class ConsoleViewInterface implements ViewModeInterface {
             System.out.println("\nERROR\nHero number chosen doesn't exit.");
             System.exit(0);
         } catch (InputMismatchException e) {
-            System.out.println("\nERROR\nWe only accept numbers.");
+            System.out.println("\nERROR\nOnly numbers accepted.");
             System.exit(0);
         }
 
@@ -164,12 +162,11 @@ public class ConsoleViewInterface implements ViewModeInterface {
             System.out.println("\nERROR\nDatafile corrupt.");
             System.exit(0);
         }
-        
     }
 
     public void run(){
         Scanner sc = new Scanner(System.in);
-        this.init(sc);
+        this.Starting(sc);
         GameMap map = new GameMap(this.hero.getLevel(), this.hero);
         String move = null;
         boolean correct = false;
@@ -178,10 +175,10 @@ public class ConsoleViewInterface implements ViewModeInterface {
 
         while (true){
             if (map.metVillain()){
-                System.out.printf("You met the following villain(s)\n");
+                System.out.printf("You met (a) villain(s)\n");
                 System.out.println(map.getMetVillainsPositionString());
 
-                System.out.print("YOU\nFight (F) OR Run (R): ");
+                System.out.print("\nFight (F) OR Run (R): ");
 
                 String fightOrRun = sc.nextLine();
                 if (fightOrRun.equals("R") || fightOrRun.equals("r")){
@@ -196,23 +193,19 @@ public class ConsoleViewInterface implements ViewModeInterface {
                     System.out.println(this.hero.heroStats());
                 }
                 else{
-                    System.out.print("Enter the valide controle");
-                    
+                    System.out.print("Enter an existing game control");
                 }
             } 
             else 
             {
-                System.out.print("YOU\nEnter your move (N - Up, E - Right, W - Left & S - Down): ");
+                System.out.print("\nEnter your move (N - North, E - East(Right), W - (West)Left & S - South(Down)): ");
                 move = map.move(sc.nextLine());
                 if (move.equals("END"))
                 {
                     System.out.println("\nGAME\nGame ended. You finished the game.");
                     break;
                 }
-                else 
-                {
-                //System.out.println();
-                }
+                else {}
             }
             System.out.println("\nGAME");
             System.out.println(map.toString());
