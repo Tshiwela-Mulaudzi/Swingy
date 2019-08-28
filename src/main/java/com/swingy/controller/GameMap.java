@@ -24,10 +24,10 @@ public class GameMap {
         this.gridSize = this.calculateMapGridSize(this.level);
         this.grid = new int[this.gridSize][this.gridSize];
         this.characters = new HashMap<Integer, Player>();
-        this.createCharacters(hero);
+        this.createEnemyCharacters(hero);
     }
 
-    private void changeMap(){
+    private void changeMapSize(){
         Hero hero = (Hero)this.characters.get(this.heroSymbol);
         hero.incrementLevel();
         
@@ -37,15 +37,15 @@ public class GameMap {
         this.grid = new int[this.gridSize][this.gridSize];
         this.characters = new HashMap<Integer, Player>();
 
-        this.addHero(hero);
-        this.addVillains();
+        this.addHeroCharacter(hero);
+        this.addVillainsCharacter();
     }
 
     private int calculateMapGridSize(int level){
         return ((level - 1) * 5 + 10 - (level % 2));
     }
 
-    private void addHero(Player hero){
+    private void addHeroCharacter(Player hero){
         int intialPosition = this.gridSize / 2;
         hero.setPosition(intialPosition, intialPosition);
         this.characters.put(++GameMap.numberOfCharacters, hero);
@@ -53,7 +53,7 @@ public class GameMap {
         this.grid[intialPosition][intialPosition] = 1;
     }
 
-    private void addVillains(){
+    private void addVillainsCharacter(){
         Random random = new Random();
         int numberOfVillains = this.level * 5;
         int totalCharacters = 1 + numberOfVillains;
@@ -72,9 +72,9 @@ public class GameMap {
         }
     }
 
-    private void createCharacters(Player hero){
-        this.addHero(hero);
-        this.addVillains();
+    private void createEnemyCharacters(Player hero){
+        this.addHeroCharacter(hero);
+        this.addVillainsCharacter();
     }
 
     public String[] getMetVillainsPosition(){
@@ -169,7 +169,7 @@ public class GameMap {
         return results;
     }
 
-    private String matchStatus(int hero, int villain){
+    private String GameResults(int hero, int villain){
         if (hero > villain){
             return "WIN";
         } else if (hero == villain){
@@ -209,11 +209,11 @@ public class GameMap {
         if (heroMode.equals("ATTACK")){
             int heroAttack = hero.getAttackValue() * (hero.getHitPoints() / villains.length);
             int villainsDefence = totalHelm + totalArmor;
-            fightStatus = this.matchStatus(heroAttack, villainsDefence);
+            fightStatus = this.GameResults(heroAttack, villainsDefence);
         } else {
             int heroDefence = hero.getDefenceValue() * (hero.getHitPoints() / villains.length);
             int villainsAttack = totalWeapon + totalArmor;
-            fightStatus = this.matchStatus(heroDefence, villainsAttack);
+            fightStatus = this.GameResults(heroDefence, villainsAttack);
         }
 
         if (fightStatus.equals("WIN")){
@@ -300,7 +300,7 @@ public class GameMap {
             if (move.equals("END"))
             {
                 if (this.level < 5){
-                    this.changeMap();
+                    this.changeMapSize();
                     move = "LEVEL UP";
                 }
             }
