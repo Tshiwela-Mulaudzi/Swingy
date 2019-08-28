@@ -10,14 +10,6 @@ maven:
 	clear
 	mvn clean package
 
-git: origin alt
-
-origin:
-	git push origin master
-
-alt:
-	git push alt master
-
 clean:
 	rm -Rf .settings
 	rm -Rf .classpath
