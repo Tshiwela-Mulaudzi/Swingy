@@ -5,7 +5,6 @@ import com.swingy.model.Hero;
 import com.swingy.model.Villain;
 import com.swingy.model.Position;
 import com.swingy.view.ConsoleViewInterface;
-
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Random;
@@ -238,7 +237,6 @@ public class GameMap {
                 this.grid[p.getRow()][p.getColumn()] = 0;
             }
         }
-
         return fightStatus;
     }
 
@@ -252,7 +250,6 @@ public class GameMap {
         String move = null;
         while (true)
         {
-
             if (direction.equals("N") || direction.equals("n")){
                 if (row == 0){
                     status = "END";
@@ -300,12 +297,13 @@ public class GameMap {
 
     public String move(String direction){
         String move = this.navigation(direction);
-            if (move.equals("END")){
-            if (this.level < 5){
-                this.changeMap();
-                move = "LEVEL UP";
+            if (move.equals("END"))
+            {
+                if (this.level < 5){
+                    this.changeMap();
+                    move = "LEVEL UP";
+                }
             }
-    }
         return move;
     }
 

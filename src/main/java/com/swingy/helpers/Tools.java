@@ -3,7 +3,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-
 public class Tools{
     public static String padLeft(String s, int n) {
         return String.format("%" + n + "s", s);  
