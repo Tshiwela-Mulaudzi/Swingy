@@ -5,6 +5,7 @@ import com.swingy.model.Hero;
 import com.swingy.model.Villain;
 import com.swingy.model.Position;
 import com.swingy.view.ConsoleViewInterface;
+
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Random;
@@ -17,7 +18,6 @@ public class GameMap {
     private HashMap<Integer, Player> characters;
     private static int numberOfCharacters = 0;
     private int heroSymbol;
-    private final String[] meetOutcomes = {"RUN", "FIGHT"};
 
     public GameMap(int level, Player hero) {
         this.level = level;
@@ -37,15 +37,15 @@ public class GameMap {
         this.grid = new int[this.gridSize][this.gridSize];
         this.characters = new HashMap<Integer, Player>();
 
-        this.addHeroCharacter(hero);
-        this.addVillainsCharacter();
+        this.addHero(hero);
+        this.addVillains();
     }
 
     private int calculateMapGridSize(int level){
         return ((level - 1) * 5 + 10 - (level % 2));
     }
 
-    private void addHeroCharacter(Player hero){
+    private void addHero(Player hero){
         int intialPosition = this.gridSize / 2;
         hero.setPosition(intialPosition, intialPosition);
         this.characters.put(++GameMap.numberOfCharacters, hero);
@@ -53,7 +53,7 @@ public class GameMap {
         this.grid[intialPosition][intialPosition] = 1;
     }
 
-    private void addVillainsCharacter(){
+    private void addVillains(){
         Random random = new Random();
         int numberOfVillains = this.level * 5;
         int totalCharacters = 1 + numberOfVillains;
@@ -73,8 +73,8 @@ public class GameMap {
     }
 
     private void createEnemyCharacters(Player hero){
-        this.addHeroCharacter(hero);
-        this.addVillainsCharacter();
+        this.addHero(hero);
+        this.addVillains();
     }
 
     public String[] getMetVillainsPosition(){
@@ -144,32 +144,7 @@ public class GameMap {
         return status;
     }
 
-    public String meetOutcome(){
-        String results = null;
-        Hero hero = (Hero)this.characters.get(this.heroSymbol);
-        int row = hero.getRow();
-        int column = hero.getColumn();
-        int prow = -1;
-        int pcolumn = -1;
-        
-        if (hero.getPreviousPosition() == null){
-            results = "FIGHT";
-        } else {
-            results = this.meetOutcomes[new Random().nextInt(2)];
-            if (results.equals("RUN")){
-                prow = hero.getPreviousPosition().getRow();
-                pcolumn = hero.getPreviousPosition().getColumn();
-                
-                this.grid[row][column] = 0;
-                hero.setPosition(prow, pcolumn);
-                hero.makePreviousPositionNull();
-                this.grid[prow][pcolumn] = 1;
-            }
-        }
-        return results;
-    }
-
-    private String GameResults(int hero, int villain){
+    private String matchStatus(int hero, int villain){
         if (hero > villain){
             return "WIN";
         } else if (hero == villain){
@@ -209,11 +184,11 @@ public class GameMap {
         if (heroMode.equals("ATTACK")){
             int heroAttack = hero.getAttackValue() * (hero.getHitPoints() / villains.length);
             int villainsDefence = totalHelm + totalArmor;
-            fightStatus = this.GameResults(heroAttack, villainsDefence);
+            fightStatus = this.matchStatus(heroAttack, villainsDefence);
         } else {
             int heroDefence = hero.getDefenceValue() * (hero.getHitPoints() / villains.length);
             int villainsAttack = totalWeapon + totalArmor;
-            fightStatus = this.GameResults(heroDefence, villainsAttack);
+            fightStatus = this.matchStatus(heroDefence, villainsAttack);
         }
 
         if (fightStatus.equals("WIN")){
@@ -237,6 +212,7 @@ public class GameMap {
                 this.grid[p.getRow()][p.getColumn()] = 0;
             }
         }
+
         return fightStatus;
     }
 
@@ -246,10 +222,9 @@ public class GameMap {
         Hero hero = (Hero)this.characters.get(this.heroSymbol);
         int row = hero.getRow();
         int column = hero.getColumn();
-        Scanner sc = new Scanner(System.in);
-        String move = null;
         while (true)
         {
+
             if (direction.equals("N") || direction.equals("n")){
                 if (row == 0){
                     status = "END";
@@ -297,13 +272,12 @@ public class GameMap {
 
     public String move(String direction){
         String move = this.navigation(direction);
-            if (move.equals("END"))
-            {
-                if (this.level < 5){
-                    this.changeMapSize();
-                    move = "LEVEL UP";
-                }
+            if (move.equals("END")){
+            if (this.level < 5){
+                this.changeMapSize();
+                move = "LEVEL UP";
             }
+    }
         return move;
     }
 

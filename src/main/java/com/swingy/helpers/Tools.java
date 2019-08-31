@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+
 public class Tools{
     public static String padLeft(String s, int n) {
         return String.format("%" + n + "s", s);  
@@ -35,7 +36,4 @@ public class Tools{
         return results;
     }
 
-    public static String[] HeroesList(String heroesString){
-        return heroesString.split("\n");
-    }
 }

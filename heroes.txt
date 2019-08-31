@@ -1,0 +1,6 @@
+Gamer,ClassA,1,1,15,4,5
+Player,ClassB,2,5,25,19,10
+Student,ClassC,3,10,30,41,25
+Doll,ClassD,4,20,8,30,19
+Robot,ClassE,5,30,40,45,50
+Random,ClassF,1,45,35,39,45

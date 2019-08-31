@@ -27,13 +27,4 @@ public class Villain extends Player {
     public int getHelmValue(){
         return this.helm;
     }
-
-    public String stats(){
-        String results = null;
-        results = "--- Villain Stats ---\n";
-        results += String.format("Weapon: %s\n", this.weapon);
-        results += String.format("Armor: %s\n", this.armor);
-        results += String.format("Helm: %s\n", this.helm);
-        return results;
-    }
 }

@@ -5,44 +5,33 @@ public class Hero extends Player {
     public static final String FILENAME = "heroes.txt";
     
     private Position previousPosition = null;
-    @NotBlank(message = "You cannot leave a name blank")
+    @NotBlank(message = "Name cannot be null")
     private String name = null;
-    @NotBlank(message = "You cannot leave a class blank")
+    @NotBlank(message = "Class cannot be null")
     private String heroClass = null;
     @Digits(integer=1, fraction=0, message="Level digits cannot less/greater than 1")
-	@Min(value=1, message="Level cannot be less than 1")
-	@Max(value=5, message="Level cannot be more than 5")
+	@Min(value=1, message="Level min value cannot be less than 1")
+	@Max(value=5, message="Level max value cannot be more than 5")
     private int level;
     @Digits(integer=2, fraction=0, message="Experience digits cannot greater than 2")
-    @Min(value=0, message="Experience level cannot be less than 0")
-    @Max(value=50, message="Experience level cannot be more than 50")
+    @Min(value=0, message="Experience min value cannot be less than 0")
+    @Max(value=50, message="Experience max value cannot be more than 50")
     private long experience;
     @Digits(integer=2, fraction=0, message="Attack digits cannot greater than 2")
-    @Min(value=0, message="Attack points cannot be less than 0")
-    @Max(value=50, message="Attack points cannot be more than 50")
+    @Min(value=0, message="Attack min value cannot be less than 0")
+    @Max(value=50, message="Attack max value cannot be more than 50")
     private int attack;
     @Digits(integer=2, fraction=0, message="Defence digits cannot greater than 2")
-    @Min(value=0, message="Defence points cannot be less than 0")
-    @Max(value=50, message="Defence points cannot be more than 50")
+    @Min(value=0, message="Defence min value cannot be less than 0")
+    @Max(value=50, message="Defence max value cannot be more than 50")
     private int defence;
-    @Digits(integer=2, fraction=0, message="Hit Points digits cannot greater than 2")
-    @Min(value=0, message="Hit Points  cannot be less than 0")
-    @Max(value=50, message="Hit Points cannot be more than 50")
+    @Digits(integer=2, fraction=0, message="HitPoints digits cannot greater than 2")
+    @Min(value=0, message="HitPoints min value cannot be less than 0")
+    @Max(value=50, message="HitPoints max value cannot be more than 50")
     private int hitPoints;
 
-    public Hero(){}
 
     public Hero(String name, String heroClass, int level, long experience, int attack, int defence, int hitPoints){
-        this.name = name;
-        this.heroClass = heroClass;
-        this.level = level;
-        this.experience = experience;
-        this.attack = attack;
-        this.defence = defence;
-        this.hitPoints = hitPoints;
-    }
-
-    public void setHero(String name, String heroClass, int level, long experience, int attack, int defence, int hitPoints){
         this.name = name;
         this.heroClass = heroClass;
         this.level = level;
@@ -92,9 +81,6 @@ public class Hero extends Player {
         return this.level;
     }
 
-    public void makePreviousPositionNull(){
-        this.previousPosition = null;
-    }
 
     public void setPreviousPosition(int row, int column){
         if (this.previousPosition == null)
@@ -105,9 +91,6 @@ public class Hero extends Player {
         }
     }
 
-    public Position getPreviousPosition(){
-        return this.previousPosition;
-    }
 
     public void changePosition(int row, int column){
         this.setPreviousPosition(this.getRow(), this.getColumn());
